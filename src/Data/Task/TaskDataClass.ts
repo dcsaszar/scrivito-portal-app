@@ -11,15 +11,21 @@ export const TaskData = Scrivito.provideDataClass('TaskData', {
     index: async (params: {
       continuation(): string | undefined
       search: () => string
-    }) => fetchIndex(params.continuation()),
+    }) => fetchIndex(params.continuation(), params.search()),
   },
 })
 
-async function fetchIndex(continuation?: string) {
-  return Scrivito.unstable_JrRestApi.post(
-    '../pisa-api/tasks',
-    continuation ? { params: { continuation } } : {},
-  ) as Promise<{ results: [{ id: string }]; continuation?: string }>
+async function fetchIndex(continuation?: string, search?: string) {
+  const params: Record<string, string> = {}
+  const data: Record<string, string> = {}
+
+  if (continuation) params.continuation = continuation
+  if (search) data.search_term = search
+
+  return Scrivito.unstable_JrRestApi.post('../pisa-api/tasks', {
+    params,
+    data,
+  }) as Promise<{ results: [{ id: string }]; continuation?: string }>
 }
 
 async function update(

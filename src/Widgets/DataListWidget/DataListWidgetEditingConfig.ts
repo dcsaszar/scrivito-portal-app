@@ -9,8 +9,9 @@ provideEditingConfig(DataListWidget, {
       description: 'Default: 1',
     },
   },
-  properties: ['nrOfColumns'],
+  properties: ['nrOfColumns', 'showSearch', 'searchPlaceholder'],
   initialContent: {
     nrOfColumns: '1',
+    searchPlaceholder: 'Search by typing',
   },
 })

@@ -6,5 +6,7 @@ export const DataListWidget = provideWidgetClass('DataListWidget', {
     data: 'datalocator',
     nothingFound: 'widgetlist',
     nrOfColumns: ['enum', { values: ['1', '2', '3', '4', '5', '6'] }],
+    showSearch: 'boolean',
+    searchPlaceholder: 'string',
   },
 })
