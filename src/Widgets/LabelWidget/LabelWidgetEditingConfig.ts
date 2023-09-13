@@ -3,7 +3,10 @@ import { LabelWidget } from './LabelWidgetClass'
 
 provideEditingConfig(LabelWidget, {
   title: 'Label',
-  properties: ['valueSize'],
+  properties: (widget) =>
+    widget.get('hasHtmlSupport')
+      ? ['valueSize', 'hasHtmlSupport', 'value']
+      : ['valueSize', 'hasHtmlSupport'],
   initialContent: {
     label: 'Label',
     value: 'Value',
