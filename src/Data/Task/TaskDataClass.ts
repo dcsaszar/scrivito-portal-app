@@ -38,10 +38,7 @@ async function update(
 }
 
 async function create(data: { name?: string; description?: string }) {
-  const id = (
-    await (Scrivito.unstable_JrRestApi.post('../pisa-api/create_task', {
-      data,
-    }) as Promise<{ id: string }>)
-  ).id
-  return { _id: id }
+  return await (Scrivito.unstable_JrRestApi.post('../pisa-api/create_task', {
+    data,
+  }) as Promise<{ id: string }>)
 }
