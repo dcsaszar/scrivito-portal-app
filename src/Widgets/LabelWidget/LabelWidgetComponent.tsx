@@ -36,7 +36,13 @@ provideComponent(LabelWidget, ({ widget }) => {
         return (dataItem?.get(attributeName) as string) || 'n.A.'
       })
 
-    if (value.includes('<')) htmlValue = value
+    if (value.includes('<'))
+      htmlValue = value
+        .replace(
+          /<head[\s\S]+?<\/head>|<\/?body>|<\/?html[^>]*?>|<!DOCTYPE[^>]*?>/gi,
+          '',
+        )
+        .trim()
   }
 
   return (
