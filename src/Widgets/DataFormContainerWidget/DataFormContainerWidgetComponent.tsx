@@ -1,5 +1,6 @@
 import {
   ContentTag,
+  currentPageParams,
   navigateTo,
   provideComponent,
   useDataItem,
@@ -50,6 +51,11 @@ provideComponent(DataFormContainerWidget, ({ widget }) => {
     try {
       if (dataItem) {
         await dataItem.update(attributes)
+        toast.success(createdMessage)
+        if (redirectAfterCreate)
+          navigateTo(redirectAfterCreate, {
+            params: currentPageParams(),
+          })
       } else {
         const createdItem = await dataScope.create(attributes)
 
