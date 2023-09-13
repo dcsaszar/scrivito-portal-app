@@ -6,6 +6,8 @@ export const TaskData = Scrivito.provideDataClass('TaskData', {
       (await fetchIndex()).results.find((item) => item.id === id) || null,
     update: async (id: string, task: { name?: string; description?: string }) =>
       update(id, task),
+    create: async (task: { name?: string; description?: string }) =>
+      create(task),
     index: async (params: {
       continuation(): string | undefined
       search: () => string
@@ -27,4 +29,10 @@ async function update(
   return Scrivito.unstable_JrRestApi.patch(`../pisa-api/update_task/${id}`, {
     data,
   }) as Promise<unknown>
+}
+
+async function create(data: { name?: string; description?: string }) {
+  return Scrivito.unstable_JrRestApi.post('../pisa-api/create_task', {
+    data,
+  }) as Promise<{ id: string }>
 }
