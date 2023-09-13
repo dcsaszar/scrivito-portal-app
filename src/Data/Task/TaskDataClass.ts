@@ -16,7 +16,7 @@ export const TaskData = Scrivito.provideDataClass('TaskData', {
 })
 
 async function fetchIndex(continuation?: string) {
-  return Scrivito.unstable_JrRestApi.fetch(
+  return Scrivito.unstable_JrRestApi.post(
     '../pisa-api/tasks',
     continuation ? { params: { continuation } } : {},
   ) as Promise<{ results: [{ id: string }]; continuation?: string }>
@@ -32,7 +32,10 @@ async function update(
 }
 
 async function create(data: { name?: string; description?: string }) {
-  return Scrivito.unstable_JrRestApi.post('../pisa-api/create_task', {
-    data,
-  }) as Promise<{ id: string }>
+  const id = (
+    await (Scrivito.unstable_JrRestApi.post('../pisa-api/create_task', {
+      data,
+    }) as Promise<{ id: string }>)
+  ).id
+  return { _id: id }
 }
