@@ -5,6 +5,7 @@ provideComponent(LabelWidget, ({ widget }) => {
   const valueCssClassNames = ['text-multiline']
 
   const hasHtmlSupport = widget.get('hasHtmlSupport')
+  const showIfEmpty = widget.get('showIfEmpty')
 
   const valueSize = widget.get('valueSize')
   if (valueSize && valueSize !== 'body-font-size') {
@@ -12,6 +13,19 @@ provideComponent(LabelWidget, ({ widget }) => {
   }
 
   const dataItem = useDataItem()
+
+  if (!showIfEmpty) {
+    if (
+      widget
+        .get('value')
+        .replace(/__[a-z]+\.([a-z]+)__/gi, (_, attributeName) => {
+          return (dataItem?.get(attributeName) as string) || '<empty>'
+        })
+        .includes('<empty>')
+    ) {
+      return null
+    }
+  }
 
   let htmlValue
 

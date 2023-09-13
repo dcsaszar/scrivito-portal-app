@@ -12,6 +12,7 @@ export const LabelWidget = provideWidgetClass('LabelWidget', {
     value: 'string',
     details: 'string',
     hasHtmlSupport: 'boolean',
+    showIfEmpty: 'boolean',
   },
   extractTextAttributes: ['label', 'value', 'details'],
 })

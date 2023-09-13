@@ -5,8 +5,8 @@ provideEditingConfig(LabelWidget, {
   title: 'Label',
   properties: (widget) =>
     widget.get('hasHtmlSupport')
-      ? ['valueSize', 'hasHtmlSupport', 'value']
-      : ['valueSize', 'hasHtmlSupport'],
+      ? ['valueSize', 'showIfEmpty', 'hasHtmlSupport', 'value']
+      : ['valueSize', 'showIfEmpty', 'hasHtmlSupport'],
   initialContent: {
     label: 'Label',
     value: 'Value',
