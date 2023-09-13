@@ -1,6 +1,8 @@
 import { provideComponent, ContentTag, useDataItem } from 'scrivito'
 import { StatusWidget } from './StatusWidgetClass'
 
+import './StatusWidget.scss'
+
 provideComponent(StatusWidget, ({ widget }) => {
   const dataItem = useDataItem()
 
@@ -14,7 +16,7 @@ provideComponent(StatusWidget, ({ widget }) => {
     // skip
   }
   const rawValue = dataItem?.get(customFieldName)
-  const value: { title: unknown } = (typeof rawValue === 'string'
+  const value: Record<string, unknown> = (typeof rawValue === 'string'
     ? mapping[rawValue]
     : undefined) ?? {
     title: dataItem?.get(customFieldName),
@@ -25,6 +27,8 @@ provideComponent(StatusWidget, ({ widget }) => {
     valueCssClassNames.push(valueSize)
   }
 
+  const { color, percent, title } = value
+
   return (
     <div>
       <ContentTag
@@ -32,9 +36,18 @@ provideComponent(StatusWidget, ({ widget }) => {
         attribute="label"
         className="text-bold opacity-60 text-extra-small text-uppercase"
       />
-      <div className={valueCssClassNames.join(' ')}>
-        {value.title as string}
-      </div>
+      {color === undefined && (
+        <div className={valueCssClassNames.join(' ')}>{title as string}</div>
+      )}
+      {color !== undefined && (
+        <div className="progress-bar">
+          <div
+            className="progress-bar-color"
+            style={{ backgroundColor: `${color}`, width: `${percent}%` }}
+          ></div>
+          <div className="progress-bar-label">{title as string}</div>
+        </div>
+      )}
       <ContentTag
         content={widget}
         attribute="details"
