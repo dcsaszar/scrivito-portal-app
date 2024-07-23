@@ -18,6 +18,8 @@ export const Homepage = provideObjClass('Homepage', {
     siteDropShadow: 'boolean',
     siteFacebookAppId: 'string',
     siteFavicon: ['reference', { only: 'Image' }],
+    siteFontBody: ['reference', { only: 'Font' }],
+    siteFontDisplay: ['reference', { only: 'Font' }],
     siteFooter: ['widgetlist', { only: 'SectionWidget' }],
     siteHeader: 'widgetlist',
     siteLanguageIcon: ['reference', { only: 'Image' }],

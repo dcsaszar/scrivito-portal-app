@@ -25,6 +25,16 @@ provideEditingConfig(Homepage, {
       title: 'PisaSales Portal API URL',
     },
     siteFacebookAppId: { title: 'Facebook app ID' },
+    siteFontBody: {
+      title: 'Body font family',
+      description:
+        'Please verify that the font license permits using this font on your website.',
+    },
+    siteFontDisplay: {
+      title: 'Display font family',
+      description:
+        'Font for headlines, buttons, and other prominent text elements. Please verify that the font license permits using this font on your website.',
+    },
     siteLanguageIcon: { title: 'Language icon' },
     siteLogoDark: {
       title: 'Dark logo',
@@ -83,6 +93,11 @@ provideEditingConfig(Homepage, {
         'siteColorSecondaryDarken',
       ],
       key: 'site-colors-group',
+    },
+    {
+      title: 'Site typography',
+      properties: ['siteFontBody', 'siteFontDisplay'],
+      key: 'site-typography-group',
     },
     ...defaultPagePropertiesGroups,
   ],
