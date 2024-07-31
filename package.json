@@ -7,6 +7,7 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "eslint": "eslint --max-warnings 0 'src/**/*.ts' 'src/**/*.tsx'",
+    "lighthouse": "CF_PAGES=1 npm run prerender && precompress --exclude '**.woff2' --types br dist-ssr && lhci autorun",
     "prerender": "tsc && vite build && vite-node --options.deps.external='/scrivito/' src/prerenderContent.ts",
     "prerender-preview": "vite preview --outDir dist-ssr",
     "prettier": "prettier --check .",
@@ -15,10 +16,13 @@
     "knip": "knip"
   },
   "dependencies": {
+    "@lhci/cli": "^0.14.0",
     "color": "^4.2.3",
     "highlight-words-core": "^1.2.2",
     "history": "^5.3.0",
+    "local-web-server": "^5.3.4",
     "lodash-es": "^4.17.21",
+    "precompress": "^12.0.5",
     "pretty-bytes": "^6.1.1",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
