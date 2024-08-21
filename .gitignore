@@ -14,6 +14,8 @@ dist-ssr
 *.local
 .lighthouseci
 
+contentDump
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

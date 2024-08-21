@@ -63,12 +63,27 @@ function fileStats() {
 
 async function dumpContent() {
   let continuation: string | undefined
+  const objDatas = []
   const objIds = []
+  const idMap: Record<string, string> = {}
 
   do {
     const data = (await scrivitoClient.put('workspaces/published/objs/search', {
       data: {
         continuation,
+        query: [
+          {
+            field: '_site_id',
+            operator: 'equals',
+            value: ['portalDe', 'portalEn'],
+          },
+          {
+            field: '_path',
+            negate: true,
+            operator: 'equals',
+            value: ['/', null],
+          },
+        ],
         include_objs: true,
         options: { site_aware: true },
         size: 10,
@@ -77,13 +92,51 @@ async function dumpContent() {
     process.stdout.write('.')
 
     for (const objData of data.objs) {
-      const processedObjData = ignorePerInstanceData(objData)
-      await dumpObjAndBinaries(processedObjData)
-      objIds.push(processedObjData._id)
+      if (!['portalDe', 'portalEn'].includes(objData._site_id || '')) {
+        throw new Error('unexpected')
+      }
+      objDatas.push(objData)
+      idMap[objData._id] = objData._id.split('').reverse().join('')
     }
 
     continuation = data.continuation
   } while (continuation)
+
+  for (const objData of objDatas) {
+    const processedObjData = ignorePerInstanceData(objData)
+    const mappedData = JSON.parse(
+      JSON.stringify(processedObjData)
+        .replace(/\b[0-9a-f]{16}\b/g, (v) => idMap[v] || v)
+        .replaceAll('"subhealine":', '"headline":')
+        .replaceAll('"DocumentationPage"', '"Page"')
+        .replaceAll('"DocumentationHomePage"', '"Page"')
+        .replaceAll('"TrainingPage"', '"Page"')
+        .replaceAll('"TrainingHomePage"', '"Page"')
+        .replaceAll('"ProfilePage"', '"Page"')
+        .replaceAll('"ChatPage"', '"Page"')
+        .replaceAll(
+          '"ContentSectionWidget","body"',
+          '"SectionWidget","content"',
+        ) // incomplete, not important
+        .replaceAll('"ContentNavigationSliderWidget"', '"TextWidget"') // incomplete, not important
+        .replaceAll(
+          '"ContentNavigationMultipleSliderWidget"',
+          '"HeadlineWidget"',
+        )
+        .replaceAll('"LinkBoxWidget"', '"HeadlineWidget"') // incomplete
+        .replaceAll('"CourseAttachmentWidget"', '"HeadlineWidget"') // incomplete
+        .replaceAll('"DeviderWidget"', '"DividerWidget"')
+        .replaceAll('"FaqListWidget"', '"HeadlineWidget"') // incomplete, not important
+        .replaceAll('"DashboardHeaderWidget"', '"HeadlineWidget"') // incomplete, not important
+        .replaceAll('"PageHeaderWidget"', '"HeadlineWidget"') // incomplete
+        .replaceAll('"DocumentationTileWidget"', '"TextWidget"') // incomplete
+        .replaceAll('"ProductLinkWidget"', '"TextWidget"') // incomplete, not important
+        .replaceAll('"portalDe"', '"dc07b5fb5abd4c35"')
+        .replaceAll('"portalEn"', '"56a14d0750cc844e"'),
+    )
+    await dumpObj(mappedData)
+    objIds.push(mappedData._id)
+  }
 
   dumpManifest(objIds)
 }

@@ -4,5 +4,5 @@ export default {
   rewrite: [{ from: '(/..)(/.*|$)', to: '$&.html' }],
   spa: 'index.html',
   spaAssetTestFs: true,
-  staticMaxage: 31536000,
+  staticMaxage: 1,
 }
