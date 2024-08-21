@@ -17,6 +17,7 @@
     "prerender-precompress": "precompress --include '(**).(css|html|js)' --types br dist-ssr",
     "prerender-preview": "ws",
     "prettier": "prettier --check .",
+    "serve-dump": "ws -p 8081 -d contentDump",
     "start": "vite"
   },
   "dependencies": {
