@@ -1,4 +1,5 @@
 import { SocialCardsTab } from '../Components/ScrivitoExtensions/SocialCardsTab'
+import { getScrivitoBootstrapIconEditor } from '../scrivito-icon-picker'
 import { ensureString } from '../utils/ensureString'
 
 export const defaultPageEditingConfigAttributes = {
@@ -65,6 +66,17 @@ export const defaultPageInitialContent = {
 } as const
 
 export const defaultPagePropertiesGroups = [
+  {
+    component: getScrivitoBootstrapIconEditor({
+      attribute: 'linkIcon',
+      description:
+        'This icon appears, for example, in a vertical navigation widget.',
+      showClearButton: true,
+    }),
+    key: 'icon-group',
+    properties: ['linkIcon'],
+    title: 'Icon',
+  },
   {
     title: 'Layout',
     properties: [
