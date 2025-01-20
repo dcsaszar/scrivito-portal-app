@@ -1,6 +1,6 @@
 import dns from 'dns'
 import fs from 'fs'
-import { defineConfig, loadEnv } from 'vite'
+import { defineConfig, loadEnv, transformWithEsbuild } from 'vite'
 import react from '@vitejs/plugin-react-swc'
 import { resolve } from 'path'
 import { productionHeaders, developmentHeaders } from './headers.config'
@@ -39,21 +39,27 @@ export default defineConfig(({ mode }) => {
     },
     optimizeDeps: {
       force: true,
-      esbuildOptions: {
-        plugins: [
-          {
-            name: 'load-js-files-as-jsx',
-            setup(build) {
-              build.onLoad({ filter: /src\/.*\.js$/ }, async (args) => ({
-                loader: 'jsx',
-                contents: fs.readFileSync(args.path, 'utf8'),
-              }))
-            },
-          },
-        ],
-      },
+      esbuildOptions: { loader: { '.js': 'jsx' } },
     },
-    plugins: [react(), writeProductionHeaders(outDir)],
+    plugins: [
+      react(),
+      writeProductionHeaders(outDir),
+      {
+        name: 'transform-jsx-in-js',
+        enforce: 'pre', // important for HMR to work!
+        async transform(code, id) {
+          if (!id.match(/.*\.js$/)) return null
+
+          return await transformWithEsbuild(code, id, {
+            loader: 'jsx',
+            jsx: 'automatic',
+          })
+        },
+      },
+    ],
+    resolve: {
+      dedupe: ['react', 'react-dom'],
+    },
     preview: {
       port: 8080,
       strictPort: true,
