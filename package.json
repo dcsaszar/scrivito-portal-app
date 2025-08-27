@@ -25,10 +25,10 @@
     "history": "^5.3.0",
     "lodash-es": "^4.17.21",
     "pretty-bytes": "^7.0.0",
-    "react": "^18.3.1",
+    "react": "^19.1.1",
     "react-bootstrap": "^2.10.10",
     "react-color-palette": "^7.3.0",
-    "react-dom": "^18.3.1",
+    "react-dom": "^19.1.1",
     "react-draggable": "^4.5.0",
     "react-dropzone": "^14.3.8",
     "react-helmet-async": "^2.0.5",
@@ -77,6 +77,9 @@
       "cookie": "^0.7.0",
       "rimraf": "4",
       "tmp": "^0.2.4"
+    },
+    "react-helmet-async": {
+      "react": "^19.0.0"
     }
   }
 }
