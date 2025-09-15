@@ -1,5 +1,6 @@
 import { provideEditingConfig } from 'scrivito'
 import { Image } from './ImageObjClass'
+import { ImageTagsEditor } from '../../Components/ScrivitoExtensions/ImageTagsEditor'
 
 provideEditingConfig(Image, {
   title: 'Image',
@@ -17,4 +18,12 @@ provideEditingConfig(Image, {
     },
   },
   properties: ['alternativeText', 'tags'],
+  propertiesGroups: [
+    {
+      title: 'Tags',
+      component: ImageTagsEditor,
+      properties: ['tags'],
+      key: 'tags',
+    },
+  ],
 })
